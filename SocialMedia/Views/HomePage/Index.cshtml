@@ -1,0 +1,122 @@
+﻿@model List<SocialMedia.Models.SharingViewModel>
+@{
+    Layout = "~/Views/Shared/_MyLayot.cshtml";
+}
+<link href="~/MyContent/Mycss.css" rel="stylesheet" />
+
+<div class="sol">
+    <h5 class="yazi">@Session["Name"] @Session["Surname"]</h5>
+    <div class="profilDiv">
+        <img src="/Images/@Session["ProfilePhoto"]" alt="" style="width:80px;">
+    </div>
+    <a href="/Profile/Index/@Session["Id"]">Profili Düzenle</a>
+    <div class="solust">
+        <h3 class="yazi">Bilgileri</h3>
+        <p class="yazi">@Session["Coutry"]</p>
+        <p class="yazi">@Session["City"]</p>
+    </div>
+
+    <div class="solalt">
+        <a class="yazi" style="margin-top:10px;" href="/HomePage/AllFriends">Arkadaşlar</a>       
+        <span style="padding:5px;">@Html.Action("FriendsSmallPartial")</span>
+    </div>
+</div>
+
+
+<div class="orta">
+    <div class="ortaust">
+        <p>Ne Düşünüyorsun?</p>
+        <form method="post" action="/HomePage/AddSharing" enctype="multipart/form-data">
+            <div class="form-group">
+                <textarea rows="4" cols="50" name="SharingText" class="form-control" resize="none"> </textarea>
+            </div>
+            <div class="form-group">
+                <input type="file" name="SharingImage" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Paylaş" />
+            </div>
+        </form>
+    </div>
+
+    <div class="ortaalt">
+        <table class="paylasimalani">
+            @foreach (var item in Model)
+            {
+                <tr id="@item.Id" class="blok" style="margin-bottom:15px; background-color:aliceblue; width:100%">
+                    <td><img src="/Images/@item.User.ProfilePhoto" alt="" style="width:50px; border-radius:30px;"></td>
+                    <td>
+                        <h5 style="color:#21618C"><u> @item.User.Name @item.User.Surname bir gönderi paylaştı </u></h5>
+                        <div>
+                            @if (item.SharingText != null)
+                            {
+                                @item.SharingText
+                            }
+                        </div>
+                        <div>
+                            @if (item.SharingImage != null)
+                            {
+                                <img src="/Images/@item.SharingImage" alt="" style="width:250px;">
+                            }
+
+                        </div>
+                    </td>
+                </tr>
+                <tr style="margin-top:5px; background-color:#BDC3C7  ; width:100%">
+                    <td></td>
+                    <td>
+
+                        <a>Yorumlar</a>
+                        <div id="asd_@item.Id">
+                            @Html.Action("CommentListPartial", new { id = item.Id })
+                        </div>
+                        <form id="frm" action="/HomePage/AddComment" method="post">
+                            <input type="text" name="Text" id="Text_@item.Id" placeholder="Yorum...">
+                            <input type="hidden" name="SharingId" id="SharingId_@item.Id" value="@item.Id" />
+
+                            <input type="button" name="save" value="Save" onclick="call('Text_@item.Id','SharingId_@item.Id','#asd_@item.Id','@item.Id')" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+       
+    </div>
+</div>
+
+<div class="sag">
+    <div class="BirinciAlan">
+        <h3>Deneme</h3>
+        <p>xxxxxxxxxxxxxxxx</p>
+    </div>
+
+    <div class="İkinciAlan">
+        <h3>Deneme</h3>
+        <p>xxxxxxxxxxxx</p>
+    </div>
+    <h3>Deneme</h3>
+    <p>xxxxxxxxxxxxxxxxxxx</p>
+    <div class="UcuncuAlan">
+
+    </div>
+</div>
+
+<script>
+
+    function call(elementId, sharingId,divId,Id) {
+        var mystring = document.getElementById(elementId).value;
+        var sid = document.getElementById(sharingId).value;
+        var path = "/HomePage/CommentListPartial/" + Id;
+
+        $.post('/HomePage/AddComment', { text: mystring, sharingId: sid }, function () {
+
+        });
+
+        $(document).ajaxComplete(function () {
+            $(divId).load(path);
+        });
+    };
+
+
+
+</script>

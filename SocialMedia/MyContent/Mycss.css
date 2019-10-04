@@ -1,0 +1,133 @@
+﻿body {
+    background-color: #85929E;
+}
+
+.deneme {
+    margin-top:5px;
+    border-bottom: 5px solid white;
+    height:40px;
+}
+
+.deneme:hover{
+    background-color:gray;
+    color:white;
+}
+
+.searchPhoto{
+    width:40px;
+    height:40px;
+    border-radius:5px;
+    background-color:rebeccapurple;
+    margin-right:10px;
+}
+.Genel {
+    background-color: #34495E;
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 50%;
+    padding: 10px;
+    float: right;
+    margin: 20px 30px 10px 0;
+}
+
+h4 {
+    color: cadetblue;
+    text-align: center;
+}
+
+table tr{
+    margin-bottom:15px;
+}
+
+.sol {
+    background-color: #34495E;
+    width: 23%;
+    border: 0 solid black;
+    margin: 10px;
+    overflow: visible;
+    float: left;
+    border-radius:10px;
+}
+
+.profilDiv {
+    border: 1px solid black;
+    background-color: cornsilk;
+    margin: auto;
+    max-width: 80px;
+    height: auto;
+}
+
+.solust {
+    background-color: #85929E;
+    width: 95%;
+    border: 0 solid black;
+    margin: 5px;
+    overflow: visible;
+    border-radius: 10px;
+}
+
+.solalt {
+    background-color: #85929E;
+    width: 95%;
+    border: 0 solid black;
+    margin: 5px;
+    border-radius: 10px;
+    height:400px;
+}
+
+.orta {
+    background-color: #85929E;
+    width: 50%;
+    border: 0 solid black;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    overflow: visible;
+    float: left;
+    border-radius: 10px;
+}
+
+.ortaust {
+    width: 100%;
+    background-color: #85929E;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.ortaalt {
+    width: 100%;
+    background-color: antiquewhite;
+    margin-top: 15px;
+    min-height: 300px;
+    border-radius: 10px;
+}
+
+.sag {
+    background-color: #34495E;
+    width: 20%;
+    border: 0 solid black;
+    margin: 10px;
+    overflow: visible;
+    float: left;
+    border-radius: 10px;
+}
+
+.paylasimalani{
+    width:100%;
+    margin:auto;
+   
+}
+
+.yazi {
+    color: #D0D3D4;
+    margin: 5px;
+}
+
+#loader {
+    background-color: #85929E;
+    border: 0 solid #ccc;
+    margin: 8px;
+    padding: 6px;
+    text-align: center;
+    display:none;
+}

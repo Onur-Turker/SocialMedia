@@ -1,0 +1,86 @@
+﻿@model List<SocialMedia.Models.SharingViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MyLayot.cshtml";
+}
+<link href="~/MyContent/Mycss.css" rel="stylesheet" />
+
+<div class="sol">
+    <h5 class="yazi">@Session["Name"] @Session["Surname"]</h5>
+    <div class="profilDiv">
+        <img src="/Images/@Session["ProfilePhoto"]" alt="" style="width:80px;">
+    </div>
+    <a href="/Profile/Index/@Session["Id"]">Profili Düzenle</a>
+    <div class="solust">
+        <h3 class="yazi">Deneme</h3>
+        <p class="yazi">xxxxxxxxxxxxxx</p>
+    </div>
+
+    <div class="solalt">
+        <h3 class="yazi">Deneme</h3>
+        <p class="yazi">xxxxxxxxxxxx</p>
+    </div>
+</div>
+
+
+
+
+<div class="ortaalt">
+    <table class="paylasimalani">
+        @foreach (var item in Model)
+        {
+            <tr style="margin-bottom:15px; background-color:aliceblue; width:100%">
+                <td><img src="/Images/@item.User.ProfilePhoto" alt="" style="width:50px; border-radius:30px;"></td>
+                <td>
+                    <h5 style="color:#21618C"><u> @item.User.Name @item.User.Surname bir gönderi paylaştı </u></h5>
+                    <div>
+                        @if (item.SharingText != null)
+                        {
+                            @item.SharingText
+                        }
+                    </div>
+                    <div>
+                        @if (item.SharingImage != null)
+                        {
+                            <img src="/Images/@item.SharingImage" alt="" style="width:250px;">
+                        }
+
+                    </div>
+                </td>
+            </tr>
+            <tr style="margin-top:5px; background-color:#BDC3C7  ; width:100%">
+                <td></td>
+                <td>
+                    <a>Yorumlar</a>
+                    <table>
+                        @if (item.Comments != null)
+                        {
+                            foreach (var comments in @item.Comments)
+                            {
+                                <tr>
+                                    <td style="color:#2471A3;">@comments.User.Name     @comments.User.Surname:  </td>
+                                    <td><span style="margin-left:5px; margin-right:10px;">@comments.Text</span></td>
+                                    <td><a href="/HomePage/DeleteComment/@comments.Id"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                </tr>
+                            }
+                        }
+
+
+                    </table>
+                    <form method="post" action="HomePage/AddComment">
+                        <input type="hidden" name="sharingId" id="Sharing" value="@item.Id" />
+                        <input type="text" name="text" id="text" placeholder="Yorum..." />
+                        <input type="submit" name="save" value="Save" />
+                    </form>
+                </td>
+            </tr>
+        }
+
+
+    </table>
+</div>
+
+
+
+
+

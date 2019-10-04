@@ -1,0 +1,60 @@
+﻿@model List<SocialMedia.Models.FriendshipRequestViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MyLayot.cshtml";
+}
+<link href="~/MyContent/Mycss.css" rel="stylesheet" />
+
+<div>
+
+    <div class="sol">
+        <h5 class="yazi">@Session["Name"] @Session["Surname"]</h5>
+        <div class="profilDiv">
+            <img src="/Images/@Session["ProfilePhoto"]" alt="" style="width:100%;">
+        </div>
+        <a href="/Profile/Index/@Session["Id"]">Profili Düzenle</a>
+        <div class="solust">
+            <h3 class="yazi">Deneme</h3>
+            <p class="yazi">xxxxxxxxxxxxxx</p>
+        </div>
+
+        <div class="solalt">
+            <h3 class="yazi">Deneme</h3>
+            <p class="yazi">xxxxxxxxxxxx</p>
+        </div>
+    </div>
+
+    <div style="min-height:40%; width:65%; background-color:#ECF0F1; margin-top:25px; float:left;">
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><img style="width:30%" src="~/Images/@item.SenderUser.ProfilePhoto" /></td>
+                            <td>@item.SenderUser.Name</td>
+                            <td>@item.SenderUser.Surname</td>
+                            <td><a href="/HomePage/FSRConfirm/@item.Id" class="btn btn-success">Onayla</a></td>
+                            <td><a href="/HomePage/FSRRefuse/@item.Id" class="btn btn-warning">Reddet</a></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirm() {
+        var fsrid = this.name;
+        var model = { Id:fsrid, Status:2 };
+        $.post("/HomePage/FSRConfirmaton", model);
+    }
+
+    function refuse() {
+        var fsrid = document.getElementById("red").name;
+        var model = { Id: fsrid, Status: 0 };
+        $.post("/HomePage/FSRConfirmaton", model);
+    }
+</script>

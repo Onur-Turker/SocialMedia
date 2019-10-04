@@ -1,0 +1,78 @@
+﻿@model List<SocialMedia.Models.FriendshipRequestViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MyLayot.cshtml";
+}
+<link href="~/MyContent/Mycss.css" rel="stylesheet" />
+
+<div>
+
+    <div class="sol">
+        <h5 class="yazi">@Session["Name"] @Session["Surname"]</h5>
+        <div class="profilDiv">
+            <img src="/Images/@Session["ProfilePhoto"]" alt="" style="width:100%;">
+        </div>
+        <a href="/Profile/Index/@Session["Id"]">Profili Düzenle</a>
+        <div class="solust">
+            <h3 class="yazi">Deneme</h3>
+            <p class="yazi">xxxxxxxxxxxxxx</p>
+        </div>
+    </div>
+
+    <div style="min-height:50%; width:65%; background-color:#ECF0F1; margin-top:25px; float:left;">
+            <div style="margin:auto">
+                <div style="min-height:40%; width:100%; background-color:#ECF0F1;">
+                    @foreach (var item in Model)
+                    {
+                        if (item.SenderUser.Id == Convert.ToInt32(Session["Id"])&& item.SenderUser!=null)
+                        {
+
+                            <div class="col-md-4" style="margin:20px; float:left; margin:20px;">
+                                <div>
+                                    <img src="~/Images/@item.ReceiverUser.ProfilePhoto" style="width:120px;" />
+                                </div>
+                                <div>
+                                    <h4>@item.ReceiverUser.Name @item.ReceiverUser.Surname</h4>
+                                    <h4>@item.ReceiverUser.Province</h4>
+                                    <h4>@(DateTime.Now.Year-item.ReceiverUser.BirthDay.Year)</h4>
+                                    <a href="/HomePage/RemoveFriend/@item.ReceiverUser.Id" class="btn btn-primary">Çıkar</a> <a href="/MyProfile/UserProfile/@item.ReceiverUser.Id" class="btn btn-primary">Profili Gör</a>
+                                </div>
+                            </div>
+                        }
+                        else if(item.ReceiverUser !=null)
+                        {
+                            <div class="col-md-4" style="margin:20px; float:left; margin:20px;">
+                                <div>
+                                    <img src="~/Images/@item.SenderUser.ProfilePhoto" style="width:120px;" />
+                                </div>
+                                <h4>@item.SenderUser.Name @item.SenderUser.Surname</h4>
+                                <h4>@item.SenderUser.Province</h4>
+                                <h4>@(DateTime.Now.Year - item.SenderUser.BirthDay.Year)</h4>
+                                <a href="/HomePage/RemoveFriend/@item.SenderUser.Id" class="btn btn-primary">Çıkar</a><a href="/MyProfile/UserProfile/@item.SenderUser.Id" class="btn btn-primary">Profili Gör</a>
+                            </div>
+                        }
+
+                    }
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function confirm() {
+        var fsrid = this.name;
+        var model = { Id: fsrid, Status: 2 };
+        $.post("/HomePage/FSRConfirmaton", model);
+    }
+
+    function refuse() {
+        var fsrid = document.getElementById("red").name;
+        var model = { Id: fsrid, Status: 0 };
+        $.post("/HomePage/FSRConfirmaton", model);
+    }
+</script>
+
+

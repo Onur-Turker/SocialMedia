@@ -1,0 +1,145 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+            padding-left: 30%;
+        }
+
+        li {
+            float: left;
+        }
+
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+                li a:hover {
+                    background-color: #111;
+                }
+
+
+     
+    </style>
+    <link href="~/MyContent/Mycss.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <ul>
+            <li id="ara">
+                @{/*List<SocialMedia.Models.UserViewModel> uList = (List<SocialMedia.Models.UserViewModel>)ViewBag.usrlist;*/}
+                <form id="frmSearch" method="post">
+                    <input type="text" class="form-control" name="txt" id="search" value="" placeholder="Ara">
+                </form>
+            </li>               
+            <li><a class="active" href="/HomePage/Index">AnaSayfa</a></li>
+            <li><a href="/MyProfile/Index">Profil</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about">@Session["Name"]</a></li>
+            @{List<SocialMedia.Models.FriendshipRequestViewModel> List = (List<SocialMedia.Models.FriendshipRequestViewModel>)Session["FSR"];}
+
+            @{if (List.Where(c => c.Status == 1).Count() > 0)
+                {
+                    <li>
+                        <a class="fas fa-user-friends" href="/HomePage/FriendShipRequests/?id=@Session["Id"]" style="color:red; width:40px;" data-toggle="tooltip" title="Arkadaşlık İstekleri">@List.Where(c => c.Status == 1).Count()</a>
+
+                    </li>
+                }
+            }
+
+        </ul>
+        <div style="border:2px solid black; margin:5px; width:80%; margin:auto; margin-top:10px;">
+            @RenderBody()
+        </div>
+    </div>
+    <div id="searchFriends" style="width:300px; height:400px; background-color:azure; z-index:1; position:absolute; margin-left:30%; display:none; top:50px;">
+
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        var Isopen = false;
+
+        $("#search").keyup(function () {
+            $("#searchFriends").empty();
+           
+            $.post("/HomePage/FriendSearch", $("#frmSearch").serialize(), function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var element2 = "<a href='/MyProfile/UserProfile/" + data[i].Id +"'><p class='deneme'><span class='searchPhoto'><img width='40px' src='/Images/" + data[i].ProfilePhoto + "'></span>" + data[i].Name + " " + data[i].Surname + "</p></a>";
+
+                    $("#searchFriends").append(element2);
+                    Isopen = true;
+                };
+            });
+
+            $("#searchFriends").show();
+        });
+
+
+
+        $(document).click(function () {
+            if (Isopen) {
+                $("#searchFriends").hide();
+            };
+            });
+
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() == $(document).height() - $(this).height()) {
+                var id = $(".blok:last").attr("id");
+                alert(id);
+            }
+        });
+
+        $(document).ready(function () {
+            var loadMore = true;
+            $('#userlist').on("scroll", function () {
+                var scrollHeight = $('#userlistcontent').height();
+                var scrollPosition = $('#userlist').height() + $('#userlist').scrollTop();
+                if (loadMore) {
+                    if (scrollHeight <= scrollPosition-15) {                     
+                        loadMore = false;
+                        var id = $("#userlistcontent").children().last().attr("id");                       
+                        $("#loader").show();
+                        $.ajax({
+                            type: "POST",
+                            url: "HomePage/FriendsSmallPartialPost/" + id,
+                            success: function (data) {
+                                for (var i = 0; i < data.length; i++) {
+                                    var newelement= "<div id='item.Id' class='row' style='border-top:1px solid #ECF0F1;'>"
+                                        + "<div class='col-md-6 col-sm-6' style='width:50%; margin-top:6px;'>"
+                                        + "<a href='/MyProfile/UserProfile/" + data[i].Name + "'><img src='~/Images/" + data[i].ProfilePhoto +"' alt='user' class='profile - photo - md' style='width: 60px; '></a>"
+                    +"</div>"
+                    +"<div class='col-md-6 col-sm-6' style='width:50%;'>"
+                        + "<h5>" + data[i].Name + " " + data[i].Surname + "</h5>"
+                        + "<h5>" + data[i].Name + "</h5>"
+                    +"</div>"
+                    + "</div>";
+                                   
+                                    $("#userlistcontent").append(newelement);
+                                };
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    
+  
+
+</body>
+</html>
+

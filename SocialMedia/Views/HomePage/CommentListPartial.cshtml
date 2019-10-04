@@ -1,0 +1,14 @@
+﻿@model List<SocialMedia.Models.CommentViewModel>
+<table>
+    @if (Model != null)
+    {
+        foreach (var comment in Model)
+        {
+            <tr>
+                <td style="color:#2471A3;">deneme    :  </td>
+                <td id="@comment.Id"><span style="margin-left:5px; margin-right:10px;">@comment.Text</span></td>
+                <td><a href="/HomePage/DeleteComment/@comment.Id"><span class="glyphicon glyphicon-remove"></span></a></td>
+            </tr>
+        }
+    }
+</table>
